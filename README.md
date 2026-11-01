@@ -4,7 +4,7 @@ An AI-powered search assistant built using **LangChain, Groq, and Streamlit**. I
 
 ### Live Demo
 
-[**Try the AI Search Assistant**](https://ai-search-assistant-nhthwbpuxifpw46ragtkdg.streamlit.app/)
+[**Try the AI Search Assistant**](https://ai-search-assistant-bej8rbo57l38f8kthrusrk.streamlit.app/)
 
 ### Features
 
