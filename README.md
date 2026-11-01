@@ -4,7 +4,7 @@ An AI-powered search assistant built using **LangChain, Groq, and Streamlit**. I
 
 ### Live Demo
 
-[**Try the AI Search Assistant**](YOUR_STREAMLIT_APP_URL)
+[**Try the AI Search Assistant**](https://ai-search-assistant-nhthwbpuxifpw46ragtkdg.streamlit.app/)
 
 ### Features
 
@@ -55,7 +55,3 @@ An AI-powered search assistant built using **LangChain, Groq, and Streamlit**. I
 ### Configuration
 
 The application uses a Groq API key stored securely through environment variables or Streamlit Secrets.
-
-### Author
-
-**Bupendra Devegade**
