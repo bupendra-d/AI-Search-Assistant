@@ -10,9 +10,13 @@ from langchain_community.tools import (
     ArxivQueryRun,
 )
 from langchain_community.utilities import (
+    DuckDuckGoSearchAPIWrapper,
     WikipediaAPIWrapper,
     ArxivAPIWrapper,
 )
+
+from langchain_core.tools import Tool
+
 from langchain_classic.agents import (
     create_tool_calling_agent,
     AgentExecutor,
@@ -37,15 +41,35 @@ wikipedia.set_user_agent("AISearchAssistant/1.0")
 
 
 # 2. Search tools
+ddg = DuckDuckGoSearchRun(
+    api_wrapper=DuckDuckGoSearchAPIWrapper(
+        backend="lite",
+        max_results=5,
+    )
+)
+
+def safe_search(query):
+    try:
+        return ddg.run(query)
+    except Exception:
+        return "DuckDuckGo search is temporarily unavailable. Try using other available sources."
+
+
 tools = [
-    DuckDuckGoSearchRun(name="Search"),
+    Tool(
+        name="Search",
+        func=safe_search,
+        description="Search the web for current information and general topics."
+    ),
     WikipediaQueryRun(
+        name="Wikipedia",
         api_wrapper=WikipediaAPIWrapper(
             top_k_results=1,
             doc_content_chars_max=1000,
         )
     ),
     ArxivQueryRun(
+        name="Arxiv",
         api_wrapper=ArxivAPIWrapper(
             top_k_results=1,
             doc_content_chars_max=1000,
@@ -103,11 +127,14 @@ if question := st.chat_input("Ask anything..."):
             (
                 "system",
                 """You are a helpful AI search assistant.
-
-                Use Search, Wikipedia, and Arxiv whenever external
-                information or research is needed.
-
-                Answer general knowledge questions directly when possible.
+                
+                Available tools:
+                - Search: Search the web.
+                - Wikipedia: Retrieve general knowledge.
+                - Arxiv: Find academic research papers.
+                
+                Use tools whenever external information is needed.
+                Answer general questions directly when possible.
                 Never invent search results or sources.
                 Provide clear, accurate, and concise answers."""
             ),
